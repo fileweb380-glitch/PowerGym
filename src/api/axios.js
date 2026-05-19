@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API = axios.create({
 
-  baseURL: 'http://localhost:4000/api',
+  baseURL: 'https://powergym-backend-1svk.onrender.com/api',
 
   headers: {
     'Content-Type': 'application/json'
