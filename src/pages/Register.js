@@ -149,12 +149,14 @@ function Register() {
         />
 
         <input
-          type='number'
+         type='number'
           name='height'
-          placeholder='Height CM'
-          onChange={handleChange}
+         placeholder='Height (CM)'
+        step='0.01'
+         min='0'
+        onChang e={handleChange}
           required
-        />
+              />
 
         <input
           type='number'
