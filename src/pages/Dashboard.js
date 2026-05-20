@@ -103,50 +103,63 @@ function Dashboard() {
           <div className="info-cards">
 
             {[
-              {
-                icon: 'fas fa-user',
-                label: 'First Name',
-                value: user.firstName
-              },
+  {
+    icon: 'fas fa-user',
+    label: 'First Name',
+    value: user.firstName
+  },
 
-              {
-                icon: 'fas fa-user-tag',
-                label: 'Last Name',
-                value: user.lastName
-              },
+  {
+    icon: 'fas fa-user-tag',
+    label: 'Last Name',
+    value: user.lastName
+  },
 
-              {
-                icon: 'fas fa-birthday-cake',
-                label: 'Age',
-                value: `${user.age} years`
-              },
+  {
+    icon: 'fas fa-birthday-cake',
+    label: 'Age',
+    value: `${user.age} years`
+  },
 
-              {
-                icon: 'fas fa-ruler-vertical',
-                label: 'Height',
-                value: user.height
-              },
+  {
+    icon: 'fas fa-ruler-vertical',
+    label: 'Height',
+    value: user.height
+  },
 
-              {
-                icon: 'fas fa-dumbbell',
-                label: 'Weight',
-                value: user.weight
-              },
+  {
+    icon: 'fas fa-dumbbell',
+    label: 'Weight',
+    value: user.weight
+  },
 
-              {
-                icon: 'fas fa-bullseye',
-                label: 'Goal',
-                value: user.goal || 'No Goal'
-              },
+  {
+    icon: 'fas fa-bullseye',
+    label: 'Goal',
+    value: user.goal || 'No Goal'
+  },
 
-              
-              {
-                 icon: 'fas fa-credit-card',
-                 label: 'Payment',
-                  value: user.paymentMethod
-              },
+  {
+    icon: 'fas fa-credit-card',
+    label: 'Payment Method',
+    value: user.paymentMethod
+  },
 
-            ].map((item, i) => (
+  {
+    icon:
+      user.paymentStatus === 'Paid'
+        ? 'fas fa-check-circle'
+        : 'fas fa-clock',
+
+    label: 'Payment Status',
+
+    value:
+      user.paymentStatus === 'Paid'
+        ? 'Paid ✅'
+        : 'Pending ⏳'
+  },
+
+].map((item, i) => (
 
               <div
                 className="info-card glass"

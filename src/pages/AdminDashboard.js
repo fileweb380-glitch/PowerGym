@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from '../api/axios'
+import API from '../api/axios'
 
 function AdminDashboard() {
 
@@ -10,11 +10,7 @@ function AdminDashboard() {
 
     try {
 
-      const response = await axios.get(
-        '/admin/users'
-      )
-
-      console.log(response.data)
+      const response = await API.get('/admin/users')
 
       setUsers(response.data)
 
@@ -40,11 +36,18 @@ function AdminDashboard() {
 
     try {
 
-      await axios.put(
-        `/admin/payment/${id}`
-      )
+      await API.put(`/admin/payment/${id}`)
 
-      getUsers()
+      setUsers((prev) =>
+        prev.map((user) =>
+          user._id === id
+            ? {
+                ...user,
+                paymentStatus: 'Paid'
+              }
+            : user
+        )
+      )
 
     } catch (error) {
 
@@ -91,29 +94,36 @@ function AdminDashboard() {
 
                   <p>Age: {user.age}</p>
 
-                  <p>Height: {user.height} CM</p>
+                  <p>Height: {user.height}</p>
 
-                  <p>Weight: {user.weight} KG</p>
+                  <p>Weight: {user.weight}</p>
 
                   <p>Goal: {user.goal}</p>
 
                   <p>
-                    Payment: {user.paymentMethod}
+                    Payment Method: {user.paymentMethod}
                   </p>
 
                   <p>
-                    Status: {user.paymentStatus}
+                    Payment Status:
+                    {
+                      user.paymentStatus === 'Paid'
+                        ? ' ✅ Paid'
+                        : ' ⏳ Pending'
+                    }
                   </p>
 
                   {
-                    user.paymentStatus === 'Pending' && (
+                    user.paymentStatus !== 'Paid' && (
 
                       <button
                         onClick={() =>
                           approvePayment(user._id)
                         }
                       >
-                        Approve Payment
+
+                        ✅ Approve Payment
+
                       </button>
 
                     )
