@@ -151,7 +151,7 @@ function Register() {
         <input
   type='number'
   name='height'
-  placeholder='Height (Example: 1.70)'
+  placeholder='H'
   step='0.01'
   min='0'
   onChange={handleChange}
