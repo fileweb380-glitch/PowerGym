@@ -14,6 +14,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+   const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = async (e) => {
 
@@ -79,7 +80,9 @@ function Login() {
           required
         />
 
-        <input
+         <div className='password-box'>
+
+         <input
           type='password'
           placeholder='Password'
           value={password}
@@ -88,6 +91,20 @@ function Login() {
           }
           required
         />
+
+  <i
+    className={`fas ${
+      showPassword
+        ? 'fa-eye-slash'
+        : 'fa-eye'
+    }`}
+    onClick={() =>
+      setShowPassword(!showPassword)
+    }
+  ></i>
+
+</div>
+        
 
         <button
           type='submit'
