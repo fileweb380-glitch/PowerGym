@@ -117,7 +117,7 @@ function Register() {
           required
         />
 
-        <div className='password-box'>
+       <div className='password-box'>
 
   <input
     type={showPassword ? 'text' : 'password'}
@@ -149,15 +149,14 @@ function Register() {
         />
 
         <input
-         type='number'
-          name='height'
-         placeholder='Height (CM)'
-        step='0.01'
-         min='0'
-        onChang e={handleChange}
-          required
-              />
-
+  type='number'
+  name='height'
+  placeholder='Height (Example: 1.70)'
+  step='0.01'
+  min='0'
+  onChange={handleChange}
+  required
+/>
         <input
           type='number'
           name='weight'
