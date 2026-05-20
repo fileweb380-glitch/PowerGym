@@ -26,6 +26,7 @@ function Register() {
 
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (e) => {
 
@@ -116,13 +117,28 @@ function Register() {
           required
         />
 
-        <input
-          type='password'
-          name='password'
-          placeholder='Password'
-          onChange={handleChange}
-          required
-        />
+        <div className='password-box'>
+
+  <input
+    type={showPassword ? 'text' : 'password'}
+    name='password'
+    placeholder='Password'
+    onChange={handleChange}
+    required
+  />
+
+  <i
+    className={`fas ${
+      showPassword
+        ? 'fa-eye-slash'
+        : 'fa-eye'
+    }`}
+    onClick={() =>
+      setShowPassword(!showPassword)
+    }
+  ></i>
+
+</div>
 
         <input
           type='number'
