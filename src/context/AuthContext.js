@@ -14,40 +14,18 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // CHECK USER ON REFRESH
+  // LOAD USER FROM LOCAL STORAGE
   useEffect(() => {
 
-    const token = localStorage.getItem('gymToken')
+    const savedUser = localStorage.getItem('gymUser')
 
-    if (token) {
+    if (savedUser) {
 
-      API.get('/user/me')
-
-        .then((res) => {
-
-          setUser(res.data)
-
-        })
-
-        .catch(() => {
-
-          localStorage.removeItem('gymToken')
-
-          setUser(null)
-
-        })
-
-        .finally(() => {
-
-          setLoading(false)
-
-        })
-
-    } else {
-
-      setLoading(false)
+      setUser(JSON.parse(savedUser))
 
     }
+
+    setLoading(false)
 
   }, [])
 
