@@ -10,22 +10,29 @@ const API = axios.create({
 
 })
 
-// Automatically send token with every request
+// SEND TOKEN AUTOMATICALLY
 API.interceptors.request.use(
 
-  (req) => {
+  (config) => {
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('gymToken')
+
+    console.log('TOKEN:', token)
 
     if (token) {
-      req.headers.Authorization = `Bearer ${token}`
+
+      config.headers.Authorization = `Bearer ${token}`
+
     }
 
-    return req
+    return config
+
   },
 
   (error) => {
+
     return Promise.reject(error)
+
   }
 
 )
