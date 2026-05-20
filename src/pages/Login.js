@@ -13,10 +13,13 @@ function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleLogin = async (e) => {
 
     e.preventDefault()
+
+    setLoading(true)
 
     try {
 
@@ -48,6 +51,10 @@ function Login() {
         'Login Failed'
       )
 
+    } finally {
+
+      setLoading(false)
+
     }
 
   }
@@ -55,13 +62,12 @@ function Login() {
   return (
 
     <div className='auth-container'>
-
       <form
         className='auth-form'
         onSubmit={handleLogin}
       >
 
-        <h1>Login</h1>
+        <h1>Welcome back</h1>
 
         <input
           type='email'
@@ -83,8 +89,11 @@ function Login() {
           required
         />
 
-        <button type='submit'>
-          Login
+        <button
+          type='submit'
+          disabled={loading}
+        >
+          {loading ? 'Loading...' : 'Login'}
         </button>
 
         <p className='message'>
@@ -100,10 +109,9 @@ function Login() {
         </div>
 
       </form>
-
     </div>
 
   )
 }
 
-export default Login
+export default Login;
