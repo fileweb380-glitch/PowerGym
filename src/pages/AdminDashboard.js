@@ -9,11 +9,6 @@ function AdminDashboard() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // GET USER
-  const user = JSON.parse(
-    localStorage.getItem('gymUser')
-  )
-
   // GET ADMIN ACCESS
   const adminAccess =
     localStorage.getItem('adminAccess')
@@ -44,11 +39,7 @@ function AdminDashboard() {
   // LOAD USERS
   useEffect(() => {
 
-    if (
-      user &&
-      user.isAdmin &&
-      adminAccess === 'true'
-    ) {
+    if (adminAccess === 'true') {
 
       getUsers()
 
@@ -58,14 +49,10 @@ function AdminDashboard() {
 
     }
 
-  }, [user, adminAccess])
+  }, [adminAccess])
 
   // PROTECT PAGE
-  if (
-    !user ||
-    !user.isAdmin ||
-    adminAccess !== 'true'
-  ) {
+  if (adminAccess !== 'true') {
 
     return <Navigate to='/admin' />
 
