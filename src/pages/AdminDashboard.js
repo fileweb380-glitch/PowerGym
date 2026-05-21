@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+
 import { Navigate } from 'react-router-dom'
+
 import API from '../api/axios'
 
 function AdminDashboard() {
@@ -12,6 +14,43 @@ function AdminDashboard() {
     localStorage.getItem('gymUser')
   )
 
+  // GET USERS
+  const getUsers = async () => {
+
+    try {
+
+      const response = await API.get(
+        '/admin/users'
+      )
+
+      setUsers(response.data)
+
+    } catch (error) {
+
+      console.log(error)
+
+    } finally {
+
+      setLoading(false)
+
+    }
+
+  }
+
+  // HOOK ALWAYS BEFORE RETURN
+  useEffect(() => {
+
+    getUsers()
+
+  }, [])
+
+  // PROTECT PAGE
+  if (!user || !user.isAdmin) {
+
+    return <Navigate to='/login' />
+
+  }
+
   // APPROVE PAYMENT
   const approvePayment = async (id) => {
 
@@ -21,14 +60,14 @@ function AdminDashboard() {
         `/admin/payment/${id}`
       )
 
-      setUsers((prevUsers) =>
-        prevUsers.map((singleUser) =>
-          singleUser._id === id
+      setUsers((prev) =>
+        prev.map((user) =>
+          user._id === id
             ? {
-                ...singleUser,
+                ...user,
                 paymentStatus: 'Paid'
               }
-            : singleUser
+            : user
         )
       )
 
@@ -37,51 +76,6 @@ function AdminDashboard() {
       console.log(error)
 
     }
-
-  }
-
-  // GET USERS
-  useEffect(() => {
-
-    const getUsers = async () => {
-
-      // STOP IF NOT ADMIN
-      if (!user || !user.isAdmin) {
-
-        setLoading(false)
-
-        return
-
-      }
-
-      try {
-
-        const response = await API.get(
-          '/admin/users'
-        )
-
-        setUsers(response.data)
-
-      } catch (error) {
-
-        console.log(error)
-
-      } finally {
-
-        setLoading(false)
-
-      }
-
-    }
-
-    getUsers()
-
-  }, [user])
-
-  // PROTECT PAGE
-  if (!user || !user.isAdmin) {
-
-    return <Navigate to='/login' />
 
   }
 
@@ -105,59 +99,35 @@ function AdminDashboard() {
           <div className='users-grid'>
 
             {
-              users.map((singleUser) => (
+              users.map((user) => (
 
                 <div
                   className='user-card'
-                  key={singleUser._id}
+                  key={user._id}
                 >
 
                   <h2>
-                    {singleUser.firstName}
+                    {user.firstName}
                     {' '}
-                    {singleUser.lastName}
+                    {user.lastName}
                   </h2>
 
-                  <p>
-                    Email:
-                    {' '}
-                    {singleUser.email}
-                  </p>
+                  <p>Email: {user.email}</p>
 
-                  <p>
-                    Phone:
-                    {' '}
-                    {singleUser.phone}
-                  </p>
+                  <p>Phone: {user.phone}</p>
 
-                  <p>
-                    Age:
-                    {' '}
-                    {singleUser.age}
-                  </p>
+                  <p>Age: {user.age}</p>
 
-                  <p>
-                    Height:
-                    {' '}
-                    {singleUser.height}
-                  </p>
+                  <p>Height: {user.height}</p>
 
-                  <p>
-                    Weight:
-                    {' '}
-                    {singleUser.weight}
-                  </p>
+                  <p>Weight: {user.weight}</p>
 
-                  <p>
-                    Goal:
-                    {' '}
-                    {singleUser.goal}
-                  </p>
+                  <p>Goal: {user.goal}</p>
 
                   <p>
                     Payment Method:
                     {' '}
-                    {singleUser.paymentMethod}
+                    {user.paymentMethod}
                   </p>
 
                   <p>
@@ -165,7 +135,7 @@ function AdminDashboard() {
                     Payment Status:
 
                     {
-                      singleUser.paymentStatus === 'Paid'
+                      user.paymentStatus === 'Paid'
                         ? ' ✅ Paid'
                         : ' ⏳ Pending'
                     }
@@ -173,12 +143,12 @@ function AdminDashboard() {
                   </p>
 
                   {
-                    singleUser.paymentStatus !== 'Paid' && (
+                    user.paymentStatus !== 'Paid' && (
 
                       <button
                         onClick={() =>
                           approvePayment(
-                            singleUser._id
+                            user._id
                           )
                         }
                       >
