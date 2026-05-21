@@ -58,7 +58,7 @@ function AdminDashboard() {
 
     }
 
-  }, [])
+  }, [user, adminAccess])
 
   // PROTECT PAGE
   if (
@@ -219,4 +219,4 @@ function AdminDashboard() {
   )
 }
 
-export default AdminDashboard;
+export default AdminDashboard
