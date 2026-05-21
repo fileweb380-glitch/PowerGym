@@ -1,7 +1,7 @@
-// src/pages/Login.js
-
 import { useState } from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
+
 import { useAuth } from '../context/AuthContext'
 
 function Login() {
@@ -14,7 +14,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
-   const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = async (e) => {
 
@@ -31,11 +31,20 @@ function Login() {
 
       setMessage(data.message)
 
+      // SAVE TOKEN
+      localStorage.setItem(
+        'gymToken',
+        data.token
+      )
+
+      // SAVE USER
+      localStorage.setItem(
+        'gymUser',
+        JSON.stringify(data.user)
+      )
+
       // ADMIN
-      if (
-        data.user.email ===
-        'admin@gmail.com'
-      ) {
+      if (data.user.isAdmin) {
 
         navigate('/admin')
 
@@ -63,12 +72,13 @@ function Login() {
   return (
 
     <div className='auth-container'>
+
       <form
         className='auth-form'
         onSubmit={handleLogin}
       >
 
-        <h1>Welcome back</h1>
+        <h1>Welcome Back</h1>
 
         <input
           type='email'
@@ -80,37 +90,48 @@ function Login() {
           required
         />
 
-         <div className='password-box'>
+        <div className='password-box'>
 
-         <input
-          type='password'
-          placeholder='Password'
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          required
-        />
+          <input
+            type={
+              showPassword
+                ? 'text'
+                : 'password'
+            }
+            placeholder='Password'
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
 
-  <i
-    className={`fas ${
-      showPassword
-        ? 'fa-eye-slash'
-        : 'fa-eye'
-    }`}
-    onClick={() =>
-      setShowPassword(!showPassword)
-    }
-  ></i>
+          <i
+            className={`fas ${
+              showPassword
+                ? 'fa-eye-slash'
+                : 'fa-eye'
+            }`}
+            onClick={() =>
+              setShowPassword(
+                !showPassword
+              )
+            }
+          ></i>
 
-</div>
-        
+        </div>
 
         <button
           type='submit'
           disabled={loading}
         >
-          {loading ? 'Loading...' : 'Login'}
+
+          {
+            loading
+              ? 'Loading...'
+              : 'Login'
+          }
+
         </button>
 
         <p className='message'>
@@ -126,9 +147,10 @@ function Login() {
         </div>
 
       </form>
+
     </div>
 
   )
 }
 
-export default Login;
+export default Login

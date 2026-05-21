@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+
+import { Navigate } from 'react-router-dom'
+
 import API from '../api/axios'
 
 function AdminDashboard() {
@@ -6,11 +9,26 @@ function AdminDashboard() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // GET USER
+  const user = JSON.parse(
+    localStorage.getItem('gymUser')
+  )
+
+  // PROTECT PAGE
+  if (!user || !user.isAdmin) {
+
+    return <Navigate to='/login' />
+
+  }
+
+  // GET USERS
   const getUsers = async () => {
 
     try {
 
-      const response = await API.get('/admin/users')
+      const response = await API.get(
+        '/admin/users'
+      )
 
       setUsers(response.data)
 
@@ -32,11 +50,14 @@ function AdminDashboard() {
 
   }, [])
 
+  // APPROVE PAYMENT
   const approvePayment = async (id) => {
 
     try {
 
-      await API.put(`/admin/payment/${id}`)
+      await API.put(
+        `/admin/payment/${id}`
+      )
 
       setUsers((prev) =>
         prev.map((user) =>
@@ -85,32 +106,63 @@ function AdminDashboard() {
                 >
 
                   <h2>
-                    {user.firstName} {user.lastName}
+                    {user.firstName}
+                    {' '}
+                    {user.lastName}
                   </h2>
 
-                  <p>Email: {user.email}</p>
-
-                  <p>Phone: {user.phone}</p>
-
-                  <p>Age: {user.age}</p>
-
-                  <p>Height: {user.height}</p>
-
-                  <p>Weight: {user.weight}</p>
-
-                  <p>Goal: {user.goal}</p>
-
                   <p>
-                    Payment Method: {user.paymentMethod}
+                    Email:
+                    {' '}
+                    {user.email}
                   </p>
 
                   <p>
+                    Phone:
+                    {' '}
+                    {user.phone}
+                  </p>
+
+                  <p>
+                    Age:
+                    {' '}
+                    {user.age}
+                  </p>
+
+                  <p>
+                    Height:
+                    {' '}
+                    {user.height}
+                  </p>
+
+                  <p>
+                    Weight:
+                    {' '}
+                    {user.weight}
+                  </p>
+
+                  <p>
+                    Goal:
+                    {' '}
+                    {user.goal}
+                  </p>
+
+                  <p>
+                    Payment Method:
+                    {' '}
+                    {user.paymentMethod}
+                  </p>
+
+                  <p>
+
                     Payment Status:
+
                     {
                       user.paymentStatus === 'Paid'
                         ? ' ✅ Paid'
                         : ' ⏳ Pending'
                     }
+
                   </p>
 
                   {
@@ -118,7 +170,9 @@ function AdminDashboard() {
 
                       <button
                         onClick={() =>
-                          approvePayment(user._id)
+                          approvePayment(
+                            user._id
+                          )
                         }
                       >
 
@@ -144,4 +198,4 @@ function AdminDashboard() {
   )
 }
 
-export default AdminDashboard;
+export default AdminDashboard
