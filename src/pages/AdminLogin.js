@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 
 function AdminLogin() {
@@ -8,6 +9,8 @@ function AdminLogin() {
   const [adminKey, setAdminKey] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [showPassword, setShowPassword] =
+    useState(false)
 
   const handleAdminLogin = (e) => {
 
@@ -24,6 +27,7 @@ function AdminLogin() {
         'true'
       )
 
+      // GO TO ADMIN DASHBOARD
       navigate('/admin/dashboard')
 
     } else {
@@ -47,6 +51,8 @@ function AdminLogin() {
 
         <h1>Admin Login</h1>
 
+        {/* ADMIN KEY */}
+
         <input
           type='text'
           placeholder='Admin Key'
@@ -57,21 +63,48 @@ function AdminLogin() {
           required
         />
 
-        <input
-          type='password'
-          placeholder='Admin Password'
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          required
-        />
+        {/* PASSWORD */}
+
+        <div className='password-box'>
+
+          <input
+            type={
+              showPassword
+                ? 'text'
+                : 'password'
+            }
+            placeholder='Admin Password'
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
+
+          <i
+            className={`fas ${
+              showPassword
+                ? 'fa-eye-slash'
+                : 'fa-eye'
+            }`}
+            onClick={() =>
+              setShowPassword(
+                !showPassword
+              )
+            }
+          ></i>
+
+        </div>
+
+        {/* BUTTON */}
 
         <button type='submit'>
 
           Enter Dashboard
 
         </button>
+
+        {/* MESSAGE */}
 
         <p className='message'>
           {message}
@@ -84,4 +117,4 @@ function AdminLogin() {
   )
 }
 
-export default AdminLogin;
+export default AdminLogin
