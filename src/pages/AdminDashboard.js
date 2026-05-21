@@ -14,6 +14,10 @@ function AdminDashboard() {
     localStorage.getItem('gymUser')
   )
 
+  // GET ADMIN ACCESS
+  const adminAccess =
+    localStorage.getItem('adminAccess')
+
   // GET USERS
   const getUsers = async () => {
 
@@ -37,17 +41,33 @@ function AdminDashboard() {
 
   }
 
-  // HOOK ALWAYS BEFORE RETURN
+  // LOAD USERS
   useEffect(() => {
 
-    getUsers()
+    if (
+      user &&
+      user.isAdmin &&
+      adminAccess === 'true'
+    ) {
+
+      getUsers()
+
+    } else {
+
+      setLoading(false)
+
+    }
 
   }, [])
 
   // PROTECT PAGE
-  if (!user || !user.isAdmin) {
+  if (
+    !user ||
+    !user.isAdmin ||
+    adminAccess !== 'true'
+  ) {
 
-    return <Navigate to='/login' />
+    return <Navigate to='/admin' />
 
   }
 
@@ -60,14 +80,14 @@ function AdminDashboard() {
         `/admin/payment/${id}`
       )
 
-      setUsers((prev) =>
-        prev.map((user) =>
-          user._id === id
+      setUsers((prevUsers) =>
+        prevUsers.map((singleUser) =>
+          singleUser._id === id
             ? {
-                ...user,
+                ...singleUser,
                 paymentStatus: 'Paid'
               }
-            : user
+            : singleUser
         )
       )
 
@@ -99,35 +119,59 @@ function AdminDashboard() {
           <div className='users-grid'>
 
             {
-              users.map((user) => (
+              users.map((singleUser) => (
 
                 <div
                   className='user-card'
-                  key={user._id}
+                  key={singleUser._id}
                 >
 
                   <h2>
-                    {user.firstName}
+                    {singleUser.firstName}
                     {' '}
-                    {user.lastName}
+                    {singleUser.lastName}
                   </h2>
 
-                  <p>Email: {user.email}</p>
+                  <p>
+                    Email:
+                    {' '}
+                    {singleUser.email}
+                  </p>
 
-                  <p>Phone: {user.phone}</p>
+                  <p>
+                    Phone:
+                    {' '}
+                    {singleUser.phone}
+                  </p>
 
-                  <p>Age: {user.age}</p>
+                  <p>
+                    Age:
+                    {' '}
+                    {singleUser.age}
+                  </p>
 
-                  <p>Height: {user.height}</p>
+                  <p>
+                    Height:
+                    {' '}
+                    {singleUser.height}
+                  </p>
 
-                  <p>Weight: {user.weight}</p>
+                  <p>
+                    Weight:
+                    {' '}
+                    {singleUser.weight}
+                  </p>
 
-                  <p>Goal: {user.goal}</p>
+                  <p>
+                    Goal:
+                    {' '}
+                    {singleUser.goal}
+                  </p>
 
                   <p>
                     Payment Method:
                     {' '}
-                    {user.paymentMethod}
+                    {singleUser.paymentMethod}
                   </p>
 
                   <p>
@@ -135,7 +179,7 @@ function AdminDashboard() {
                     Payment Status:
 
                     {
-                      user.paymentStatus === 'Paid'
+                      singleUser.paymentStatus === 'Paid'
                         ? ' ✅ Paid'
                         : ' ⏳ Pending'
                     }
@@ -143,12 +187,12 @@ function AdminDashboard() {
                   </p>
 
                   {
-                    user.paymentStatus !== 'Paid' && (
+                    singleUser.paymentStatus !== 'Paid' && (
 
                       <button
                         onClick={() =>
                           approvePayment(
-                            user._id
+                            singleUser._id
                           )
                         }
                       >
