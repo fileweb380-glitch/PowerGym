@@ -28,7 +28,7 @@ function AdminLogin() {
       )
 
       // GO TO ADMIN DASHBOARD
-      navigate('/admin/dashboard')
+      navigate('/admindashboard')
 
     } else {
 
